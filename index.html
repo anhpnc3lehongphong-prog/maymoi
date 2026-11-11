@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Đề kiểm tra Hóa học 10 – Chương 3</title>
+<!--
+  Đề kiểm tra online – Hóa học 10 – Chương 3. Liên kết hóa học.
+  Trang tĩnh, chạy được trên GitHub Pages (tên tệp phải là index.html).
+  Thời gian làm bài đổi ở EXAM.duration trong khối <script> bên dưới.
+  Muốn cho một máy làm lại từ đầu (khi thử đề): mở trang với đuôi #reset.
+-->
+<style>
+:root{
+  --bg:#f3f5fa; --card:#ffffff; --ink:#18202f; --muted:#586174; --line:#d6dce8;
+  --brand:#1d5bbf; --brand-ink:#ffffff; --brand-soft:#e7effc;
+  --ok:#0f7a3c; --okbg:#e5f5ea; --bad:#b3261e; --badbg:#fdecea; --warn:#8a5200; --warnbg:#fff3dc;
+  --radius:12px;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#0f131b; --card:#171d29; --ink:#e7ebf4; --muted:#9aa5ba; --line:#2a3345;
+    --brand:#6aa0ff; --brand-ink:#08111f; --brand-soft:#1c2a45;
+    --ok:#5fd18a; --okbg:#12301f; --bad:#ff8c82; --badbg:#3a1b19; --warn:#ffc266; --warnbg:#38280f; }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  padding-bottom:env(safe-area-inset-bottom,0)}
+[hidden]{display:none!important}
+.wrap{max-width:860px;margin:0 auto;padding:16px 14px 40px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin:0 0 14px}
+h1{font-size:1.45rem;line-height:1.3;margin:0 0 4px}
+h2{font-size:1.1rem;margin:0 0 8px}
+.sub{color:var(--muted);margin:0 0 14px}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:14px 0}
+.meta div{background:var(--brand-soft);border-radius:10px;padding:10px 12px}
+.meta b{display:block;font-size:.8rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.03em}
+.meta span{font-weight:650}
+.rules{margin:8px 0 0;padding-left:20px}
+.rules li{margin:4px 0}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:16px 0 6px}
+label.f{display:block;font-weight:600;font-size:.92rem}
+label.f input{display:block;width:100%;margin-top:4px;padding:10px 12px;font:inherit;color:var(--ink);
+  background:var(--card);border:1px solid var(--line);border-radius:10px}
+input:focus-visible,button:focus-visible,summary:focus-visible,.opt:focus-within{outline:3px solid var(--brand);outline-offset:2px}
+.err{color:var(--bad);font-weight:600;min-height:1.4em;margin:6px 0 0}
+button{font:inherit;cursor:pointer;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:10px 16px}
+button.primary{background:var(--brand);color:var(--brand-ink);border-color:var(--brand);font-weight:700}
+button.primary:hover{filter:brightness(1.07)}
+button:disabled{opacity:.5;cursor:not-allowed}
+
+/* thanh trạng thái */
+.bar{position:sticky;top:0;z-index:20;background:var(--card);border-bottom:1px solid var(--line);
+  padding:8px 14px;padding-top:calc(8px + env(safe-area-inset-top,0))}
+.bar-in{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.timer{font-variant-numeric:tabular-nums;font-weight:800;font-size:1.25rem;padding:2px 10px;border-radius:8px;background:var(--brand-soft)}
+.timer.low{background:var(--warnbg);color:var(--warn)}
+.timer.crit{background:var(--badbg);color:var(--bad)}
+.prog{flex:1;min-width:130px;font-size:.88rem;color:var(--muted)}
+.prog i{display:block;height:6px;border-radius:4px;background:var(--line);margin-top:4px;overflow:hidden}
+.prog i b{display:block;height:100%;width:0;background:var(--brand);transition:width .2s}
+.who{font-size:.85rem;color:var(--muted)}
+
+details.nav{margin:12px 0}
+details.nav summary{cursor:pointer;font-weight:650;padding:6px 0}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chips h4{flex-basis:100%;margin:6px 0 0;font-size:.82rem;color:var(--muted)}
+.chip{min-width:36px;height:34px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;
+  border:1px solid var(--line);background:var(--card);color:var(--ink);text-decoration:none;font-size:.88rem;font-weight:600}
+.chip.done{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.chip.part{background:var(--brand-soft);border-color:var(--brand)}
+.chip.ok{background:var(--ok);color:#fff;border-color:var(--ok)}
+.chip.bad{background:var(--bad);color:#fff;border-color:var(--bad)}
+.chip.half{background:var(--warn);color:#fff;border-color:var(--warn)}
+
+/* đề */
+.part-h{margin:22px 0 8px;font-size:1.05rem}
+.part-h small{display:block;color:var(--muted);font-weight:400;font-size:.9rem}
+article.q{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 16px 12px;margin:0 0 12px;scroll-margin-top:84px}
+article.q.ok{border-color:var(--ok)}
+article.q.bad{border-color:var(--bad)}
+.qh{display:flex;align-items:baseline;gap:8px;margin:0 0 6px}
+.qn{font-weight:800}
+.mark{margin-left:auto;font-weight:700;font-size:.88rem}
+.mark.ok{color:var(--ok)} .mark.bad{color:var(--bad)} .mark.half{color:var(--warn)}
+.qt{margin:0 0 8px}
+.opts{display:grid;grid-template-columns:1fr;gap:6px}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:9px 12px;border:1px solid var(--line);border-radius:10px;cursor:pointer;background:var(--card)}
+.opt:hover{border-color:var(--brand)}
+.opt input{margin-top:5px;flex:none;accent-color:var(--brand)}
+.opt.sel{background:var(--brand-soft);border-color:var(--brand)}
+.ol{font-weight:800;flex:none}
+.stmt{display:grid;grid-template-columns:1fr auto;gap:8px 14px;align-items:center;padding:9px 0;border-top:1px dashed var(--line)}
+.stmt .tf{display:flex;gap:6px}
+.tf label{display:inline-flex;gap:6px;align-items:center;padding:6px 12px;border:1px solid var(--line);border-radius:999px;cursor:pointer;font-weight:650;background:var(--card)}
+.tf label.sel{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.tf input{accent-color:var(--brand)}
+.stmt .sm{font-size:.84rem;font-weight:700;grid-column:1/-1}
+.stmt.ok{background:var(--okbg)} .stmt.bad{background:var(--badbg)}
+.ans-in{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.ans-in input{width:180px;max-width:100%;padding:10px 12px;font:inherit;font-weight:650;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:10px}
+.ans-in span{color:var(--muted);font-size:.88rem}
+.multi{margin:4px 0 8px 14px}
+.disabled-note{color:var(--muted);font-size:.9rem}
+sub,sup{line-height:0}
+.foot{display:flex;justify-content:center;margin:24px 0 8px}
+.foot button{padding:12px 28px;font-size:1.05rem}
+
+/* kết quả */
+.score{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.big{font-size:2.6rem;font-weight:800;line-height:1;color:var(--brand)}
+.big small{font-size:1.1rem;color:var(--muted);font-weight:600}
+table.sc{border-collapse:collapse;width:100%;margin:12px 0}
+table.sc th,table.sc td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left}
+table.sc td:nth-child(n+2),table.sc th:nth-child(n+2){text-align:right;white-space:nowrap}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.note{background:var(--warnbg);color:var(--warn);border-radius:10px;padding:10px 12px;margin:10px 0;font-size:.92rem}
+
+dialog{border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);padding:20px;max-width:min(92vw,420px)}
+dialog::backdrop{background:rgba(10,14,24,.55)}
+dialog .actions{justify-content:flex-end}
+
+@media (max-width:560px){
+  .wrap{padding:12px 10px 32px} .card{padding:16px}
+  .stmt{grid-template-columns:1fr}
+  .bar-in{gap:6px}
+}
+@media print{
+  .bar,.foot,details.nav,.actions,#screen-start{display:none!important}
+  body{background:#fff;color:#000}
+  .card,article.q{border-color:#999;break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<!-- MÀN HÌNH BẮT ĐẦU -->
+<div class="wrap" id="screen-start">
+  <div class="card">
+    <h1>Đề kiểm tra Hóa học 10 – Chương 3</h1>
+    <p class="sub">Chương 3. Liên kết hóa học (Bài 9. Quy tắc octet – Bài 12. Liên kết hydrogen và tương tác van der Waals)</p>
+    <div class="meta">
+      <div><b>Thời gian</b><span id="m-time"></span></div>
+      <div><b>Số câu</b><span>44 câu · 56 lệnh hỏi</span></div>
+      <div><b>Thang điểm</b><span>10 điểm</span></div>
+    </div>
+    <h2>Cấu trúc và cách làm bài</h2>
+    <ul class="rules">
+      <li><b>Phần I</b> – 40 câu nhiều phương án lựa chọn (6,0 điểm, 0,15 điểm/câu). Mỗi câu chọn một phương án.</li>
+      <li><b>Phần II</b> – 4 câu đúng/sai, mỗi câu 4 ý (tối đa 4,0 điểm). Mỗi ý chọn <i>Đúng</i> hoặc <i>Sai</i>. Điểm mỗi câu theo số ý đúng: 1 ý → 0,1; 2 ý → 0,25; 3 ý → 0,5; 4 ý → 1,0.</li>
+                  <li>Bài làm được lưu tự động trên máy này. Nếu lỡ tải lại trang, bạn vẫn quay lại đúng bài đang làm và đồng hồ vẫn chạy. Hết giờ, bài sẽ tự động nộp.</li>
+    </ul>
+    <form class="form" id="start-form" autocomplete="off" novalidate>
+      <label class="f">Họ và tên *<input id="f-name" maxlength="60" required></label>
+      <label class="f">Lớp *<input id="f-class" maxlength="12" required></label>
+      <label class="f">Số báo danh<input id="f-sbd" maxlength="12"></label>
+    </form>
+    <p class="err" id="start-err" role="alert"></p>
+    <button class="primary" id="btn-start" type="button">Bắt đầu làm bài</button>
+  </div>
+</div>
+
+<!-- MÀN HÌNH LÀM BÀI / KẾT QUẢ -->
+<div id="screen-exam" hidden>
+  <div class="bar" id="bar">
+    <div class="bar-in">
+      <div class="timer" id="timer" aria-live="off">--:--</div>
+      <div class="prog"><span id="prog-txt"></span><i><b id="prog-bar"></b></i></div>
+      <div class="who" id="who"></div>
+      <button class="primary" id="btn-submit" type="button">Nộp bài</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <section class="card" id="result" hidden></section>
+
+    <details class="nav" id="nav">
+      <summary>Danh sách câu hỏi</summary>
+      <div class="chips" id="chips"></div>
+    </details>
+
+    <main id="paper"></main>
+
+    <div class="foot" id="foot"><button class="primary" id="btn-submit2" type="button">Nộp bài</button></div>
+  </div>
+</div>
+
+<dialog id="dlg">
+  <h2>Nộp bài?</h2>
+  <p id="dlg-msg"></p>
+  <div class="actions">
+    <button type="button" id="dlg-cancel">Tiếp tục làm</button>
+    <button type="button" class="primary" id="dlg-ok">Nộp bài</button>
+  </div>
+</dialog>
+
+<script>
+(function(){
+'use strict';
+var EXAM = {"id":"hoa10-chuong3","title":"Đề kiểm tra Hóa học 10 – Chương 3","duration":60,"salt":"h10-c3-2026|lk","note":"","pq1":0.15,"p1":[{"id":"I1","n":1,"html":"Theo quy tắc octet, khi tham gia hình thành liên kết hóa học, nguyên tử của các nguyên tố có xu hướng đạt cấu hình electron lớp ngoài cùng của khí hiếm với","o":["4 electron.","6 electron.","10 electron.","8 electron (riêng helium là 2 electron)."],"h":"x2le9kvnk"},{"id":"I2","n":2,"html":"Ở điều kiện thường, nguyên tố nào sau đây tồn tại ở dạng nguyên tử riêng lẻ (không tạo thành phân tử)?","o":["Ne.","N.","O.","Cl."],"h":"20i4zxms3bw"},{"id":"I3","n":3,"html":"Nguyên tử sodium (Z = 11) có xu hướng nào sau đây để đạt cấu hình electron bền vững của khí hiếm?","o":["Nhận 1 electron.","Nhận 7 electron.","Nhường 1 electron.","Nhường 7 electron."],"h":"1whbdpzgi3i"},{"id":"I4","n":4,"html":"Nguyên tử oxygen (Z = 8) nhận thêm 2 electron để đạt cấu hình electron bền vững của khí hiếm. Ion tạo thành có kí hiệu là","o":["O\u003csup>+\u003c/sup>.","O\u003csup>−\u003c/sup>.","O\u003csup>2+\u003c/sup>.","O\u003csup>2−\u003c/sup>."],"h":"2adi7awp19"},{"id":"I5","n":5,"html":"Cấu hình electron của ion Mg\u003csup>2+\u003c/sup> (Z = 12) giống cấu hình electron của nguyên tử khí hiếm nào?","o":["Ne.","He.","Ar.","Kr."],"h":"3jxi6oqquc"},{"id":"I6","n":6,"html":"Dãy nào sau đây gồm các ion đều có cấu hình electron của khí hiếm argon?","o":["Na\u003csup>+\u003c/sup>, Mg\u003csup>2+\u003c/sup>, F\u003csup>−\u003c/sup>.","K\u003csup>+\u003c/sup>, Mg\u003csup>2+\u003c/sup>, Cl\u003csup>−\u003c/sup>.","K\u003csup>+\u003c/sup>, Ca\u003csup>2+\u003c/sup>, Cl\u003csup>−\u003c/sup>.","Na\u003csup>+\u003c/sup>, Ca\u003csup>2+\u003c/sup>, O\u003csup>2−\u003c/sup>."],"h":"1rb59qw2h1u"},{"id":"I7","n":7,"html":"Liên kết ion là liên kết được hình thành bởi","o":["lực hút tĩnh điện giữa các ion mang điện tích trái dấu.","sự dùng chung các cặp electron giữa hai nguyên tử.","lực hút giữa các phân tử với nhau.","sự cho – nhận cặp electron giữa các nguyên tử."],"h":"20ykk77atdf"},{"id":"I8","n":8,"html":"Liên kết ion thường được hình thành giữa","o":["hai nguyên tử phi kim giống nhau.","hai nguyên tử kim loại.","nguyên tử khí hiếm và nguyên tử kim loại.","nguyên tử kim loại điển hình và nguyên tử phi kim điển hình."],"h":"dd4qkwe8mp"},{"id":"I9","n":9,"html":"Chất nào sau đây là hợp chất ion?","o":["HCl.","NaCl.","CH\u003csub>4\u003c/sub>.","CO\u003csub>2\u003c/sub>."],"h":"1gfc25yeo0o"},{"id":"I10","n":10,"html":"Phát biểu nào sau đây về hợp chất ion là đúng?","o":["Ở điều kiện thường là chất khí, dễ bay hơi.","Có nhiệt độ nóng chảy và nhiệt độ sôi thấp.","Ở điều kiện thường là chất rắn, có nhiệt độ nóng chảy và nhiệt độ sôi cao.","Ở trạng thái rắn dẫn điện tốt."],"h":"b99jlq4kme"},{"id":"I11","n":11,"html":"Hợp chất ion tạo bởi magnesium (Z = 12) và chlorine (Z = 17) có công thức là","o":["MgCl\u003csub>2\u003c/sub>.","MgCl.","Mg\u003csub>2\u003c/sub>Cl.","Mg\u003csub>2\u003c/sub>Cl\u003csub>3\u003c/sub>."],"h":"2c18gtx08kt"},{"id":"I12","n":12,"html":"Nguyên tử aluminium (Z = 13) tạo thành ion bền theo quy tắc octet. Ion đó là","o":["Al\u003csup>+\u003c/sup>.","Al\u003csup>2+\u003c/sup>.","Al\u003csup>3−\u003c/sup>.","Al\u003csup>3+\u003c/sup>."],"h":"22265mzsaq6"},{"id":"I13","n":13,"html":"Hợp chất ion như NaCl tan trong nước tạo thành dung dịch dẫn điện được vì","o":["NaCl chứa các electron tự do.","nước là chất dẫn điện tốt.","NaCl phân li thành các ion Na\u003csup>+\u003c/sup> và Cl\u003csup>−\u003c/sup> chuyển động tự do.","NaCl tạo thành các phân tử NaCl trong dung dịch."],"h":"27flr8ud8ou"},{"id":"I14","n":14,"html":"NaCl có nhiệt độ nóng chảy (801 °C) cao hơn nhiều so với nước (0 °C). Nguyên nhân chủ yếu là","o":["lực hút tĩnh điện giữa các ion trong tinh thể NaCl rất mạnh.","phân tử NaCl có khối lượng lớn hơn nhiều phân tử nước.","giữa các phân tử NaCl có liên kết hydrogen.","liên kết cộng hóa trị trong NaCl rất bền vững."],"h":"1jqa0dtraab"},{"id":"I15","n":15,"html":"Hợp chất ion tạo bởi nguyên tố X (Z = 20) và nguyên tố Y (Z = 9) có công thức là","o":["XY.","XY\u003csub>2\u003c/sub>.","X\u003csub>2\u003c/sub>Y.","X\u003csub>2\u003c/sub>Y\u003csub>3\u003c/sub>."],"h":"b52onbn2a7"},{"id":"I16","n":16,"html":"Cation X\u003csup>2+\u003c/sup> có cấu hình electron 1s\u003csup>2\u003c/sup>2s\u003csup>2\u003c/sup>2p\u003csup>6\u003c/sup>3s\u003csup>2\u003c/sup>3p\u003csup>6\u003c/sup>. Số hiệu nguyên tử của X là","o":["18.","19.","20.","22."],"h":"15n7eo8l7rp"},{"id":"I17","n":17,"html":"Liên kết cộng hóa trị được hình thành giữa hai nguyên tử bằng","o":["lực hút tĩnh điện giữa các ion trái dấu.","sự nhường hoàn toàn electron từ nguyên tử này sang nguyên tử kia.","lực hút giữa các phân tử.","một hay nhiều cặp electron dùng chung."],"h":"2as96620vj7"},{"id":"I18","n":18,"html":"Liên kết cộng hóa trị thường được hình thành giữa","o":["nguyên tử kim loại điển hình và nguyên tử phi kim điển hình.","các nguyên tử phi kim với nhau.","các nguyên tử kim loại với nhau.","nguyên tử khí hiếm với nguyên tử kim loại."],"h":"so138ppcn8"},{"id":"I19","n":19,"html":"Trong phân tử N\u003csub>2\u003c/sub>, hai nguyên tử nitrogen liên kết với nhau bằng","o":["ba cặp electron chung.","hai cặp electron chung.","một cặp electron chung.","lực hút tĩnh điện giữa các ion trái dấu."],"h":"1rpwmffkyzq"},{"id":"I20","n":20,"html":"Số cặp electron chung giữa hai nguyên tử trong phân tử O\u003csub>2\u003c/sub> là","o":["1.","2.","3.","4."],"h":"261ionet5jm"},{"id":"I21","n":21,"html":"Liên kết σ được hình thành do","o":["sự xen phủ bên của hai orbital p.","sự cho – nhận cặp electron.","sự xen phủ trục của hai orbital.","lực hút tĩnh điện giữa hai ion."],"h":"27q267syhmd"},{"id":"I22","n":22,"html":"Liên kết π được hình thành do","o":["sự xen phủ trục của hai orbital.","sự nhường electron của kim loại cho phi kim.","lực hút giữa các phân tử.","sự xen phủ bên của hai orbital p."],"h":"htoiicf1dl"},{"id":"I23","n":23,"html":"Phân tử nào sau đây chỉ có liên kết cộng hóa trị không phân cực?","o":["H\u003csub>2\u003c/sub>O.","Cl\u003csub>2\u003c/sub>.","HCl.","NH\u003csub>3\u003c/sub>."],"h":"1cvq7fqnj3c"},{"id":"I24","n":24,"html":"Cho độ âm điện: H = 2,20; Cl = 3,16. Quy ước: hiệu độ âm điện Δχ &lt; 0,4 là liên kết cộng hóa trị không phân cực; 0,4 ≤ Δχ &lt; 1,7 là liên kết cộng hóa trị phân cực; Δχ ≥ 1,7 là liên kết ion. Liên kết trong phân tử HCl là","o":["liên kết cộng hóa trị phân cực.","liên kết cộng hóa trị không phân cực.","liên kết ion.","liên kết hydrogen."],"h":"vud7v7lile"},{"id":"I25","n":25,"html":"Trong phân tử NH\u003csub>3\u003c/sub>, số cặp electron chưa liên kết (không tham gia liên kết) trên nguyên tử nitrogen là","o":["0.","1.","2.","3."],"h":"pe6rr1g1jg"},{"id":"I26","n":26,"html":"Trong phân tử CO\u003csub>2\u003c/sub> (O=C=O), số liên kết σ và số liên kết π lần lượt là","o":["4 và 0.","3 và 1.","2 và 2.","1 và 3."],"h":"47q34swp3s"},{"id":"I27","n":27,"html":"Cho năng lượng liên kết (kJ/mol): H–Cl = 431; H–Br = 364; H–I = 297. Liên kết kém bền nhất là","o":["H–Cl.","H–Br.","cả ba liên kết bền như nhau.","H–I."],"h":"gymqx7kasd"},{"id":"I28","n":28,"html":"Trong phân tử H\u003csub>2\u003c/sub>O, số cặp electron chưa liên kết (không tham gia liên kết) trên nguyên tử oxygen là","o":["0.","1.","2.","3."],"h":"ov0pdyx4op"},{"id":"I29","n":29,"html":"Cho độ âm điện: H = 2,20; C = 2,55; N = 3,04; O = 3,44; Cl = 3,16. Dãy chất nào sau đây chỉ chứa liên kết cộng hóa trị phân cực? (Quy ước: 0,4 ≤ Δχ &lt; 1,7 là liên kết cộng hóa trị phân cực.)","o":["H\u003csub>2\u003c/sub>O, NH\u003csub>3\u003c/sub>, HCl.","H\u003csub>2\u003c/sub>, N\u003csub>2\u003c/sub>, O\u003csub>2\u003c/sub>.","Cl\u003csub>2\u003c/sub>, H\u003csub>2\u003c/sub>O, NH\u003csub>3\u003c/sub>.","N\u003csub>2\u003c/sub>, HCl, CO\u003csub>2\u003c/sub>."],"h":"owqcwgwekj"},{"id":"I30","n":30,"html":"Cho độ âm điện: H = 2,20; Cl = 3,16; Br = 2,96; I = 2,66. Dãy nào sau đây sắp xếp các liên kết theo chiều giảm dần độ phân cực?","o":["H–I, H–Br, H–Cl.","H–Cl, H–Br, H–I.","H–Br, H–Cl, H–I.","H–Cl, H–I, H–Br."],"h":"23lwy1o520a"},{"id":"I31","n":31,"html":"Trong phân tử C\u003csub>2\u003c/sub>H\u003csub>2\u003c/sub> (H–C≡C–H), số liên kết σ và số liên kết π lần lượt là","o":["5 và 0.","4 và 1.","2 và 3.","3 và 2."],"h":"73dnolfpir"},{"id":"I32","n":32,"html":"Nguyên tử N (Z = 7) và nguyên tử Cl (Z = 17) tạo hợp chất NCl\u003csub>3\u003c/sub> theo quy tắc octet. Trong phân tử NCl\u003csub>3\u003c/sub>, tổng số cặp electron chưa liên kết (không tham gia liên kết) là","o":["8.","9.","10.","12."],"h":"234llbk3gbv"},{"id":"I33","n":33,"html":"Liên kết hydrogen được hình thành giữa nguyên tử hydrogen đã liên kết với nguyên tử của nguyên tố nào sau đây và nguyên tử có độ âm điện lớn khác còn cặp electron chưa liên kết?","o":["Carbon.","Phosphorus.","Oxygen.","Sodium."],"h":"11kja4f3v65"},{"id":"I34","n":34,"html":"Chất nào sau đây tạo được liên kết hydrogen giữa các phân tử của chính nó?","o":["H\u003csub>2\u003c/sub>O.","CH\u003csub>4\u003c/sub>.","CO\u003csub>2\u003c/sub>.","Cl\u003csub>2\u003c/sub>."],"h":"16ierx2qwto"},{"id":"I35","n":35,"html":"Tương tác van der Waals là","o":["liên kết được tạo bởi lực hút tĩnh điện giữa cation và anion.","sự dùng chung electron giữa các nguyên tử.","sự cho – nhận cặp electron giữa các nguyên tử.","tương tác yếu giữa các phân tử do sự xuất hiện các lưỡng cực tạm thời."],"h":"rp8826necz"},{"id":"I36","n":36,"html":"So với các chất có phân tử khối tương đương nhưng không có liên kết hydrogen, chất có liên kết hydrogen liên phân tử thường có nhiệt độ sôi","o":["thấp hơn.","cao hơn.","bằng nhau.","không phụ thuộc vào liên kết hydrogen."],"h":"2gjmrdl875f"},{"id":"I37","n":37,"html":"Nhiệt độ sôi của H\u003csub>2\u003c/sub>O (100 °C) cao hơn nhiều so với H\u003csub>2\u003c/sub>S (−60 °C). Nguyên nhân chủ yếu là","o":["giữa các phân tử H\u003csub>2\u003c/sub>O có liên kết hydrogen, giữa các phân tử H\u003csub>2\u003c/sub>S thì không.","phân tử khối của H\u003csub>2\u003c/sub>O lớn hơn phân tử khối của H\u003csub>2\u003c/sub>S.","liên kết O–H trong phân tử bền hơn liên kết S–H.","H\u003csub>2\u003c/sub>O là hợp chất ion còn H\u003csub>2\u003c/sub>S là hợp chất cộng hóa trị."],"h":"2e3jfxbsjd1"},{"id":"I38","n":38,"html":"Ở điều kiện thường, F\u003csub>2\u003c/sub> và Cl\u003csub>2\u003c/sub> là chất khí, Br\u003csub>2\u003c/sub> là chất lỏng, I\u003csub>2\u003c/sub> là chất rắn. Nguyên nhân chủ yếu là","o":["liên kết hydrogen giữa các phân tử tăng dần.","liên kết cộng hóa trị trong phân tử bền dần từ F\u003csub>2\u003c/sub> đến I\u003csub>2\u003c/sub>.","độ âm điện của nguyên tử tăng dần từ F đến I.","tương tác van der Waals giữa các phân tử tăng dần theo phân tử khối."],"h":"1n2q6wrof50"},{"id":"I39","n":39,"html":"Ethanol (C\u003csub>2\u003c/sub>H\u003csub>5\u003c/sub>OH) và dimethyl ether (CH\u003csub>3\u003c/sub>OCH\u003csub>3\u003c/sub>) có cùng phân tử khối (46) nhưng nhiệt độ sôi lần lượt là 78 °C và −24 °C. Nguyên nhân chủ yếu là","o":["phân tử khối của ethanol lớn hơn.","giữa các phân tử ethanol có liên kết hydrogen, còn giữa các phân tử dimethyl ether thì không.","liên kết C–O trong ethanol bền hơn trong dimethyl ether.","dimethyl ether là hợp chất ion."],"h":"hrru33x92l"},{"id":"I40","n":40,"html":"Cho các chất: NH\u003csub>3\u003c/sub>, CO\u003csub>2\u003c/sub>, CH\u003csub>4\u003c/sub>, H\u003csub>2\u003c/sub>O. Số chất tạo được liên kết hydrogen giữa các phân tử của chính nó là","o":["1.","2.","3.","4."],"h":"2mmtx3n08a"}],"p2":[{"id":"II1","n":1,"html":"Nguyên tử magnesium (Z = 12) và nguyên tử oxygen (Z = 8) kết hợp với nhau tạo thành hợp chất ion MgO.","items":[{"id":"II1a","html":"Theo quy tắc octet, nguyên tử có xu hướng đạt cấu hình electron lớp ngoài cùng bền vững giống khí hiếm.","h":"ayltvpdyrs"},{"id":"II1b","html":"Nguyên tử magnesium nhận 2 electron để đạt cấu hình bền vững của khí hiếm neon.","h":"b64zfgqoda"},{"id":"II1c","html":"Ion Mg\u003csup>2+\u003c/sup> và ion O\u003csup>2−\u003c/sup> có cùng cấu hình electron 1s\u003csup>2\u003c/sup>2s\u003csup>2\u003c/sup>2p\u003csup>6\u003c/sup>.","h":"1liel2fsosi"},{"id":"II1d","html":"Ion O\u003csup>2−\u003c/sup> có 10 proton.","h":"267eapivh9x"}]},{"id":"II2","n":2,"html":"Hợp chất NaCl được tạo thành từ nguyên tử sodium (Z = 11) và nguyên tử chlorine (Z = 17).","items":[{"id":"II2a","html":"Liên kết trong tinh thể NaCl là liên kết cộng hóa trị.","h":"zud939urhi"},{"id":"II2b","html":"Khi tạo thành NaCl, nguyên tử Na nhường 1 electron cho nguyên tử Cl.","h":"1nvvagbzvcx"},{"id":"II2c","html":"Ion Na\u003csup>+\u003c/sup> và ion Cl\u003csup>−\u003c/sup> có cùng cấu hình electron.","h":"4p10xnu3js"},{"id":"II2d","html":"NaCl ở trạng thái nóng chảy dẫn điện được.","h":"1i3jlo4lb4y"}]},{"id":"II3","n":3,"html":"Xét các phân tử H\u003csub>2\u003c/sub>, N\u003csub>2\u003c/sub>, H\u003csub>2\u003c/sub>O, NH\u003csub>3\u003c/sub>. Cho độ âm điện: H = 2,20; N = 3,04; O = 3,44. Quy ước: Δχ &lt; 0,4 là liên kết cộng hóa trị không phân cực; 0,4 ≤ Δχ &lt; 1,7 là liên kết cộng hóa trị phân cực.","items":[{"id":"II3a","html":"Liên kết ba gồm một liên kết σ và hai liên kết π.","h":"1lb6owv68v8"},{"id":"II3b","html":"Liên kết N–H trong phân tử NH\u003csub>3\u003c/sub> là liên kết cộng hóa trị phân cực.","h":"dbjqxg0smc"},{"id":"II3c","html":"Trong phân tử H\u003csub>2\u003c/sub>O, cặp electron chung của liên kết O–H lệch về phía nguyên tử hydrogen.","h":"1fmbiri1qmu"},{"id":"II3d","html":"Trong phân tử NH\u003csub>3\u003c/sub>, tổng số electron tham gia tạo liên kết là 8.","h":"1ycuyqif8er"}]},{"id":"II4","n":4,"html":"Nhiệt độ sôi (°C) của một số chất: H\u003csub>2\u003c/sub>O: 100; H\u003csub>2\u003c/sub>S: −60; NH\u003csub>3\u003c/sub>: −33; PH\u003csub>3\u003c/sub>: −88; CH\u003csub>4\u003c/sub>: −162.","items":[{"id":"II4a","html":"Liên kết hydrogen bền hơn liên kết cộng hóa trị.","h":"1khm3ud0s6b"},{"id":"II4b","html":"Nhiệt độ sôi của NH\u003csub>3\u003c/sub> cao hơn PH\u003csub>3\u003c/sub> do giữa các phân tử NH\u003csub>3\u003c/sub> có liên kết hydrogen.","h":"it6uhgxfyr"},{"id":"II4c","html":"Nhiệt độ sôi của CH\u003csub>4\u003c/sub> thấp nhất trong dãy vì giữa các phân tử CH\u003csub>4\u003c/sub> chỉ có tương tác van der Waals yếu, không có liên kết hydrogen.","h":"7u0mjhp30l"},{"id":"II4d","html":"H\u003csub>2\u003c/sub>S có nhiệt độ sôi thấp hơn H\u003csub>2\u003c/sub>O vì phân tử khối của H\u003csub>2\u003c/sub>S nhỏ hơn.","h":"1syc1unc9jq"}]}],"p3":[]};
+function cyrb53(str, seed) {
+  seed = seed || 0;
+  var h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+  for (var i = 0, ch; i < str.length; i++) {
+    ch = str.charCodeAt(i);
+    h1 = Math.imul(h1 ^ ch, 2654435761);
+    h2 = Math.imul(h2 ^ ch, 1597334677);
+  }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
+}
+
+var SCALE2 = [0, 0.1, 0.25, 0.5, 1.0];
+var KEY = 'exam:' + EXAM.id;
+var $ = function(id){ return document.getElementById(id); };
+var state = null;       // {student, startedAt, endAt, answers, submitted, result}
+var timerId = null;
+
+function hk(id, val){ return cyrb53(EXAM.salt + '|' + id + '|' + val); }
+function canon(s){
+  s = String(s == null ? '' : s).trim().replace(/\s+/g, '').replace(',', '.');
+  if (!/^[-+]?\d+(\.\d+)?$/.test(s)) return null;
+  return String(parseFloat(s));
+}
+function fmt(x){ return (Math.round(x * 100) / 100).toString().replace('.', ','); }
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){} }
+function load(){ try { var s = localStorage.getItem(KEY); return s ? JSON.parse(s) : null; } catch(e){ return null; } }
+
+/* ---------- dựng đề ---------- */
+function buildPaper(){
+  var h = EXAM.note ? '<div class="card" style="padding:12px 16px">' + EXAM.note + '</div>' : '';
+  h += '<h2 class="part-h">PHẦN I. Câu trắc nghiệm nhiều phương án lựa chọn<small>Chọn một phương án đúng cho mỗi câu (câu 1 – 18).</small></h2>';
+  EXAM.p1.forEach(function(q){
+    h += '<article class="q" id="q-' + q.id + '" data-id="' + q.id + '"><div class="qh"><span class="qn">Câu ' + q.n + '.</span><span class="mark"></span></div>';
+    h += '<div class="qt">' + q.html + '</div><div class="opts">';
+    ['A','B','C','D'].forEach(function(L, i){
+      h += '<label class="opt"><input type="radio" name="' + q.id + '" value="' + L + '"><span class="ol">' + L + '.</span><span class="ot">' + q.o[i] + '</span></label>';
+    });
+    h += '</div></article>';
+  });
+  h += '<h2 class="part-h">PHẦN II. Câu trắc nghiệm đúng sai<small>Trong mỗi ý a), b), c), d), chọn Đúng hoặc Sai.</small></h2>';
+  EXAM.p2.forEach(function(q){
+    h += '<article class="q" id="q-' + q.id + '" data-id="' + q.id + '"><div class="qh"><span class="qn">Câu ' + q.n + '.</span><span class="mark"></span></div>';
+    h += '<div class="qt">' + q.html + '</div>';
+    q.items.forEach(function(it, i){
+      h += '<div class="stmt" data-sid="' + it.id + '"><div><b>' + 'abcd'[i] + ')</b> ' + it.html + '</div><div class="tf">' +
+        '<label><input type="radio" name="' + it.id + '" value="Đ">Đúng</label>' +
+        '<label><input type="radio" name="' + it.id + '" value="S">Sai</label></div><div class="sm"></div></div>';
+    });
+    h += '</article>';
+  });
+  if (EXAM.p3.length){
+  h += '<h2 class="part-h">PHẦN III. Câu trắc nghiệm trả lời ngắn<small>Nhập kết quả là một số; làm tròn theo yêu cầu của từng câu.</small></h2>';
+  EXAM.p3.forEach(function(q){
+    h += '<article class="q" id="q-' + q.id + '" data-id="' + q.id + '"><div class="qh"><span class="qn">Câu ' + q.n + '.</span><span class="mark"></span></div>';
+    h += '<div class="qt">' + q.html + '</div>';
+    h += '<div class="ans-in"><input type="text" inputmode="decimal" autocomplete="off" name="' + q.id + '" placeholder="Đáp án" aria-label="Đáp án câu ' + q.n + ' phần III"><span>Nhập số, ví dụ 12,5</span></div></article>';
+  });
+  }
+  $('paper').innerHTML = h;
+
+  var c = '<h4>Phần I</h4>';
+  EXAM.p1.forEach(function(q){ c += '<a class="chip" id="c-' + q.id + '" href="#q-' + q.id + '">' + q.n + '</a>'; });
+  c += '<h4>Phần II</h4>';
+  EXAM.p2.forEach(function(q){ c += '<a class="chip" id="c-' + q.id + '" href="#q-' + q.id + '">' + q.n + '</a>'; });
+  if (EXAM.p3.length){ c += '<h4>Phần III</h4>';
+  EXAM.p3.forEach(function(q){ c += '<a class="chip" id="c-' + q.id + '" href="#q-' + q.id + '">' + q.n + '</a>'; }); }
+  $('chips').innerHTML = c;
+  $('chips').addEventListener('click', function(e){
+    var a = e.target.closest('a.chip'); if (!a) return;
+    e.preventDefault();
+    var t = document.querySelector(a.getAttribute('href'));
+    if (t) t.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+}
+
+function applyAnswers(){
+  var ans = state.answers;
+  Object.keys(ans).forEach(function(id){
+    var v = ans[id];
+    var els = document.getElementsByName(id);
+    for (var i = 0; i < els.length; i++){
+      if (els[i].type === 'radio') els[i].checked = (els[i].value === v);
+      else els[i].value = v;
+    }
+  });
+  refreshSel();
+}
+function refreshSel(){
+  var labs = document.querySelectorAll('.opt, .tf label');
+  for (var i = 0; i < labs.length; i++){
+    var inp = labs[i].querySelector('input');
+    labs[i].classList.toggle('sel', !!(inp && inp.checked));
+  }
+}
+
+/* ---------- tiến độ ---------- */
+function allIds(){
+  var ids = [];
+  EXAM.p1.forEach(function(q){ ids.push(q.id); });
+  EXAM.p2.forEach(function(q){ q.items.forEach(function(it){ ids.push(it.id); }); });
+  EXAM.p3.forEach(function(q){ ids.push(q.id); });
+  return ids;
+}
+function isAnswered(id){
+  var v = state.answers[id];
+  if (v == null || v === '') return false;
+  if (id.indexOf('III') === 0) return canon(v) !== null;
+  return true;
+}
+function updateProgress(){
+  var ids = allIds(), n = 0;
+  ids.forEach(function(id){ if (isAnswered(id)) n++; });
+  $('prog-txt').textContent = 'Đã trả lời ' + n + '/' + ids.length + ' lệnh hỏi';
+  $('prog-bar').style.width = (100 * n / ids.length) + '%';
+  if (state.submitted) return;
+  EXAM.p1.concat(EXAM.p3).forEach(function(q){
+    $('c-' + q.id).className = 'chip' + (isAnswered(q.id) ? ' done' : '');
+  });
+  EXAM.p2.forEach(function(q){
+    var k = 0; q.items.forEach(function(it){ if (isAnswered(it.id)) k++; });
+    $('c-' + q.id).className = 'chip' + (k === 4 ? ' done' : (k > 0 ? ' part' : ''));
+  });
+}
+function unanswered(){
+  var n = 0; allIds().forEach(function(id){ if (!isAnswered(id)) n++; }); return n;
+}
+
+/* ---------- đồng hồ ---------- */
+function tick(){
+  var left = Math.max(0, state.endAt - Date.now());
+  var m = Math.floor(left / 60000), s = Math.floor((left % 60000) / 1000);
+  var t = $('timer');
+  t.textContent = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+  t.className = 'timer' + (left <= 60000 ? ' crit' : (left <= 300000 ? ' low' : ''));
+  if (left <= 0){ submit('Hết giờ làm bài, hệ thống đã tự động nộp bài.'); }
+}
+
+/* ---------- chấm điểm ---------- */
+function grade(){
+  var a = state.answers, d = {}, r = {p1: 0, p2: 0, p3: 0, c1: 0, c3: 0, p2k: []};
+  EXAM.p1.forEach(function(q){
+    var ok = !!a[q.id] && hk(q.id, a[q.id]) === q.h; d[q.id] = ok; if (ok){ r.p1 += EXAM.pq1; r.c1++; }
+  });
+  EXAM.p2.forEach(function(q){
+    var k = 0;
+    q.items.forEach(function(it){
+      var ok = !!a[it.id] && hk(it.id, a[it.id]) === it.h; d[it.id] = ok; if (ok) k++;
+    });
+    r.p2k.push(k); r.p2 += SCALE2[k];
+  });
+  EXAM.p3.forEach(function(q){
+    var c = canon(a[q.id]);
+    var ok = c !== null && hk(q.id, c) === q.h; d[q.id] = ok; if (ok){ r.p3 += 0.25; r.c3++; }
+  });
+  r.total = Math.round((r.p1 + r.p2 + r.p3) * 100) / 100;
+  r.detail = d;
+  return r;
+}
+
+/* ---------- nộp bài ---------- */
+function submit(msg){
+  if (state.submitted) return;
+  state.submitted = true;
+  state.submittedAt = Date.now();
+  state.msg = msg || '';
+  state.result = grade();
+  save();
+  showReview();
+}
+function lockInputs(){
+  var ins = document.querySelectorAll('#paper input');
+  for (var i = 0; i < ins.length; i++) ins[i].disabled = true;
+}
+function showReview(){
+  if (timerId){ clearInterval(timerId); timerId = null; }
+  lockInputs();
+  var r = state.result, d = r.detail;
+  EXAM.p1.concat(EXAM.p3).forEach(function(q){
+    var art = $('q-' + q.id), ok = d[q.id];
+    art.classList.add(ok ? 'ok' : 'bad');
+    var mk = art.querySelector('.mark'); mk.className = 'mark ' + (ok ? 'ok' : 'bad'); mk.textContent = ok ? '✓ Đúng' : '✗ Sai';
+    $('c-' + q.id).className = 'chip ' + (ok ? 'ok' : 'bad');
+  });
+  EXAM.p2.forEach(function(q, qi){
+    var k = r.p2k[qi], art = $('q-' + q.id);
+    q.items.forEach(function(it){
+      var el = document.querySelector('[data-sid="' + it.id + '"]');
+      el.classList.add(d[it.id] ? 'ok' : 'bad');
+      el.querySelector('.sm').textContent = d[it.id] ? '✓ Đúng' : '✗ Chưa đúng';
+      el.querySelector('.sm').style.color = d[it.id] ? 'var(--ok)' : 'var(--bad)';
+    });
+    var mk = art.querySelector('.mark');
+    mk.className = 'mark ' + (k === 4 ? 'ok' : (k === 0 ? 'bad' : 'half'));
+    mk.textContent = k + '/4 ý đúng · ' + fmt(SCALE2[k]) + ' điểm';
+    $('c-' + q.id).className = 'chip ' + (k === 4 ? 'ok' : (k === 0 ? 'bad' : 'half'));
+  });
+  var s = state.student, used = Math.max(0, Math.min(state.submittedAt, state.endAt) - state.startedAt);
+  var um = Math.floor(used / 60000), us = Math.floor((used % 60000) / 1000);
+  var h = '<h2>Kết quả bài làm</h2>';
+  if (state.msg) h += '<div class="note">' + esc(state.msg) + '</div>';
+  h += '<p class="sub">' + esc(s.name) + ' · Lớp ' + esc(s.cls) + (s.sbd ? ' · SBD ' + esc(s.sbd) : '') + ' · Thời gian làm bài: ' + um + ' phút ' + us + ' giây</p>';
+  h += '<div class="score"><div class="big">' + fmt(r.total) + '<small> / 10</small></div></div>';
+  h += '<table class="sc"><thead><tr><th>Phần</th><th>Kết quả</th><th>Điểm</th></tr></thead><tbody>' +
+    '<tr><td>I. Nhiều lựa chọn</td><td>' + r.c1 + '/' + EXAM.p1.length + ' câu đúng</td><td>' + fmt(r.p1) + ' / ' + fmt(EXAM.p1.length * EXAM.pq1) + '</td></tr>' +
+    '<tr><td>II. Đúng/sai</td><td>' + r.p2k.join(' – ') + ' ý đúng</td><td>' + fmt(r.p2) + ' / ' + fmt(EXAM.p2.length) + '</td></tr>' +
+    (EXAM.p3.length ? '<tr><td>III. Trả lời ngắn</td><td>' + r.c3 + '/' + EXAM.p3.length + ' câu đúng</td><td>' + fmt(r.p3) + ' / ' + fmt(EXAM.p3.length * 0.25) + '</td></tr>' : '') +
+    '</tbody></table>';
+  h += '<p class="disabled-note">Các câu được tô xanh là đúng, tô đỏ là chưa đúng. Đáp án chi tiết sẽ được giáo viên chữa sau. Bài đã được khóa, không thể sửa hoặc làm lại trên máy này.</p>';
+  h += '<div class="actions"><button type="button" class="primary" id="btn-dl">Tải kết quả (.txt)</button><button type="button" id="btn-print">In / Lưu PDF</button></div>';
+  var box = $('result'); box.innerHTML = h; box.hidden = false;
+  $('btn-dl').onclick = download; $('btn-print').onclick = function(){ window.print(); };
+  $('bar').hidden = false;
+  $('timer').textContent = 'Đã nộp'; $('timer').className = 'timer';
+  $('btn-submit').hidden = true; $('foot').hidden = true;
+  $('prog-txt').textContent = 'Điểm: ' + fmt(r.total) + '/10'; $('prog-bar').style.width = '100%';
+  document.getElementById('nav').open = false;
+  window.scrollTo(0, 0);
+}
+function download(){
+  var r = state.result, s = state.student, L = [];
+  L.push('KẾT QUẢ BÀI KIỂM TRA – ' + EXAM.title);
+  L.push('Họ và tên: ' + s.name); L.push('Lớp: ' + s.cls); L.push('SBD: ' + (s.sbd || ''));
+  L.push('Điểm: ' + fmt(r.total) + '/10');
+  L.push('Phần I: ' + r.c1 + '/' + EXAM.p1.length + ' câu đúng – ' + fmt(r.p1) + ' điểm');
+  L.push('Phần II: ' + r.p2k.join(', ') + ' ý đúng – ' + fmt(r.p2) + ' điểm');
+  if (EXAM.p3.length) L.push('Phần III: ' + r.c3 + '/' + EXAM.p3.length + ' câu đúng – ' + fmt(r.p3) + ' điểm');
+  L.push(''); L.push('Bài làm của thí sinh:');
+  EXAM.p1.forEach(function(q){ L.push('I.' + q.n + ': ' + (state.answers[q.id] || '(bỏ trống)') + (r.detail[q.id] ? ' [đúng]' : ' [sai]')); });
+  EXAM.p2.forEach(function(q){ q.items.forEach(function(it, i){ L.push('II.' + q.n + '.' + 'abcd'[i] + ': ' + (state.answers[it.id] === 'Đ' ? 'Đúng' : state.answers[it.id] === 'S' ? 'Sai' : '(bỏ trống)') + (r.detail[it.id] ? ' [đúng]' : ' [sai]')); }); });
+  EXAM.p3.forEach(function(q){ L.push('III.' + q.n + ': ' + (state.answers[q.id] || '(bỏ trống)') + (r.detail[q.id] ? ' [đúng]' : ' [sai]')); });
+  var blob = new Blob([L.join('\r\n')], {type: 'text/plain;charset=utf-8'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'ket-qua-' + (s.name || 'hoc-sinh').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^A-Za-z0-9]+/g, '-') + '.txt';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+
+/* ---------- vào bài ---------- */
+function enterExam(){
+  $('screen-start').hidden = true; $('screen-exam').hidden = false;
+  buildPaper(); applyAnswers();
+  $('who').textContent = state.student.name + ' · ' + state.student.cls;
+  updateProgress();
+  if (state.submitted){ showReview(); }
+  else { tick(); timerId = setInterval(tick, 1000); }
+  window.scrollTo(0, 0);
+}
+function start(){
+  var name = $('f-name').value.trim().replace(/\s+/g, ' '), cls = $('f-class').value.trim(), sbd = $('f-sbd').value.trim();
+  if (!name || !cls){ $('start-err').textContent = 'Vui lòng nhập Họ và tên và Lớp.'; return; }
+  $('start-err').textContent = '';
+  var now = Date.now();
+  state = {student: {name: name, cls: cls, sbd: sbd}, startedAt: now, endAt: now + EXAM.duration * 60000, answers: {}, submitted: false};
+  save(); enterExam();
+}
+
+function onAnswer(e){
+  var t = e.target; if (!t.name || state.submitted) return;
+  state.answers[t.name] = t.value;
+  save(); refreshSel(); updateProgress();
+}
+function askSubmit(){
+  if (state.submitted) return;
+  var n = unanswered();
+  $('dlg-msg').textContent = n ? ('Bạn còn ' + n + ' lệnh hỏi chưa trả lời. Sau khi nộp, bạn không thể sửa bài.') : 'Bạn đã trả lời tất cả các lệnh hỏi. Sau khi nộp, bạn không thể sửa bài.';
+  var d = $('dlg');
+  if (d.showModal) d.showModal(); else if (confirm($('dlg-msg').textContent + ' Nộp bài?')) submit('');
+}
+
+function init(){
+  if (location.hash === '#reset'){ try { localStorage.removeItem(KEY); } catch(e){} history.replaceState(null, '', location.pathname); }
+  $('m-time').textContent = EXAM.duration + ' phút';
+  $('btn-start').onclick = start;
+  $('start-form').addEventListener('submit', function(e){ e.preventDefault(); start(); });
+  $('start-form').addEventListener('keydown', function(e){ if (e.key === 'Enter'){ e.preventDefault(); start(); } });
+  $('paper').addEventListener('change', onAnswer);
+  $('paper').addEventListener('input', onAnswer);
+  $('btn-submit').onclick = askSubmit; $('btn-submit2').onclick = askSubmit;
+  $('dlg-cancel').onclick = function(){ $('dlg').close(); };
+  $('dlg-ok').onclick = function(){ $('dlg').close(); submit(''); };
+  window.addEventListener('beforeunload', function(e){ if (state && !state.submitted){ e.preventDefault(); e.returnValue = ''; } });
+  var s = load();
+  if (s && s.student){
+    state = s;
+    enterExam();
+  }
+}
+init();
+})();
+</script>
+</body>
+</html>
